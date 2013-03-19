@@ -77,6 +77,15 @@ public class H2ConnectionManager extends AbstractConnectionManager {
                 logger.debug("Connect completed");
 
                 Channel channel = future.channel();
+
+                if (!future.isSuccess()) {
+                    channel.close();
+                    if(future.cause()!=null){
+                        connectFuture.setException(future.cause());
+                    }
+                    return;
+                }
+
                 H2Connection connection = new H2Connection(maxQueueLength(),H2ConnectionManager.this,channel);
                 channel.pipeline().addFirst(DECODER, new Decoder(connectFuture,connection));
                 channel.write(

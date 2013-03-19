@@ -121,8 +121,16 @@ public class MysqlConnectionManager extends AbstractConnectionManager {
             public void operationComplete(ChannelFuture future) throws Exception {
                 logger.debug("Physical connect completed");
 
-
                 Channel channel = future.channel();
+
+                if (!future.isSuccess()) {
+                    channel.close();
+                    if(future.cause()!=null){
+                        connectFuture.setException(future.cause());
+                    }
+                    return;
+                }
+
                 MySqlConnection connection = new MySqlConnection(maxQueueLength(), MysqlConnectionManager.this, channel);
                 channel.pipeline().addLast(DECODER, new Decoder(
                         new Connecting(connectFuture, connection, credentials),connection));
