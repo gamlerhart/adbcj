@@ -15,7 +15,7 @@ public class UnicodeTest extends AbstractWithConnectionManagerTest{
     @Test
     public void canReadDifferentTexts() throws Exception{
         Connection connection = connectionManager.connect().get();
-        ResultSet resultSet = connection.executeQuery("SELECT textData FROM textContent ORDER by lang").get();
+        ResultSet resultSet = connection.executeQuery("SELECT textData FROM textcontent ORDER by lang").get();
         Assert.assertEquals(5,resultSet.size());
 
         Assert.assertEquals(resultSet.get(0).get("textData").getString(),"Die äüö sind toll");
@@ -27,23 +27,23 @@ public class UnicodeTest extends AbstractWithConnectionManagerTest{
     @Test
     public void canReadWriteDelete() throws Exception{
         Connection connection = connectionManager.connect().get();
-        connection.executeUpdate("INSERT INTO textContent (lang, textData) VALUES ('fa','ویکی‌پدیا (به انگلیسی: Wikipedia)')").get();
-        ResultSet resultSet = connection.executeQuery("SELECT textData FROM textContent WHERE lang LIKE 'fa'").get();
+        connection.executeUpdate("INSERT INTO textcontent (lang, textData) VALUES ('fa','ویکی‌پدیا (به انگلیسی: Wikipedia)')").get();
+        ResultSet resultSet = connection.executeQuery("SELECT textData FROM textcontent WHERE lang LIKE 'fa'").get();
 
 
         Assert.assertEquals(resultSet.get(0).get("textData").getString(),"ویکی‌پدیا (به انگلیسی: Wikipedia)");
 
 
-        connection.executeUpdate("DELETE FROM textContent WHERE lang LIKE 'fa'").get();
+        connection.executeUpdate("DELETE FROM textcontent WHERE lang LIKE 'fa'").get();
 
 
-        ResultSet checkDeleted = connection.executeQuery("SELECT textData FROM textContent WHERE lang LIKE 'fa'").get();
+        ResultSet checkDeleted = connection.executeQuery("SELECT textData FROM textcontent WHERE lang LIKE 'fa'").get();
         Assert.assertEquals(checkDeleted.size(),0);
     }
     @Test
     public void worksWithPreparedStatements() throws Exception{
         Connection connection = connectionManager.connect().get();
-        PreparedQuery statement = connection.prepareQuery("SELECT textData FROM textContent WHERE textData LIKE ?").get();
+        PreparedQuery statement = connection.prepareQuery("SELECT textData FROM textcontent WHERE textData LIKE ?").get();
         ResultSet resultSet = statement.execute("%한국어%").get();
 
 

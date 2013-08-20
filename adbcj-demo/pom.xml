@@ -18,6 +18,7 @@
     </properties>
 
     <dependencies>
+
         <dependency>
             <artifactId>slf4j-api</artifactId>
             <groupId>org.slf4j</groupId>
@@ -42,6 +43,11 @@
             <groupId>org.adbcj</groupId>
             <artifactId>mysql-async-driver</artifactId>
             <version>${adbcj.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.adbcj</groupId>
+            <artifactId>dbcj</artifactId>
+            <version>0.7-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

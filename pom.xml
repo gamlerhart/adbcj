@@ -31,7 +31,8 @@
 		<module>mysql</module>
 		<module>h2</module>
 		<module>tck</module>
-	</modules>
+        <module>dbcj</module>
+    </modules>
 
 	<scm>
 		<url>https://github.com/gamlerhart/adbcj</url>

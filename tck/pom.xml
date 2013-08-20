@@ -73,6 +73,11 @@
 			<version>${slf4j.version}</version>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.adbcj</groupId>
+            <artifactId>dbcj</artifactId>
+            <version>0.7-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 
 </project>

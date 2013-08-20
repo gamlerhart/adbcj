@@ -2,6 +2,7 @@ package info.adbcj.demo;
 
 import org.adbcj.*;
 
+
 /**
  * @author roman.stoffel@gamlor.info
  */
@@ -18,9 +19,9 @@ public class MainDemo {
         // Usually you have one instance in your system.
         // when you close the connection-manager, all associated connections are closed to.
         final ConnectionManager connectionManager = ConnectionManagerProvider.createConnectionManager(
-                "adbcj:pooled:mysql://localhost/adbcj-demo",
-                "adbcj",
-                "adbc-pwd"
+                "adbcj:pooled:mysql://localhost/adbcjtck",
+                "adbcjtck",
+                "adbcjtck"
         );
 
         // Connect to your database. It's asynchronous.
@@ -74,9 +75,9 @@ public class MainDemo {
     private static void continueWithInserting(final Connection connection) {
         // We can directly send multiple queries
         // And then wait until everyone is done.
-        final DbSessionFuture<Result> firstPost = connection.executeUpdate("INSERT INTO posts(title,content) VALUES('The Title','TheContent')");
-        final DbSessionFuture<Result> secondPost = connection.executeUpdate("INSERT INTO posts(title,content) VALUES('Second Title','More Content')");
-        final DbSessionFuture<Result> thirdPost = connection.executeUpdate("INSERT INTO posts(title,content) VALUES('Third Title','Even More Content')");
+        final DbFuture<Result> firstPost = connection.executeUpdate("INSERT INTO posts(title,content) VALUES('The Title','TheContent')");
+        final DbFuture<Result> secondPost = connection.executeUpdate("INSERT INTO posts(title,content) VALUES('Second Title','More Content')");
+        final DbFuture<Result> thirdPost = connection.executeUpdate("INSERT INTO posts(title,content) VALUES('Third Title','Even More Content')");
         final DbListener<Result> allDone = new DbListener<Result>() {
             @Override
             public void onCompletion(DbFuture<Result> resultSetDbFuture) {

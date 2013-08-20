@@ -7,6 +7,7 @@ public class InitMysql extends InitDatabase {
     @Override
     protected void loadDriver() throws ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
+        //Class.forName("org.adbcj.dbcj.Driver");
     }
 
     @Override

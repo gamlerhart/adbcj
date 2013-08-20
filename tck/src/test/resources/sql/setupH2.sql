@@ -81,16 +81,16 @@ CREATE TABLE IF NOT EXISTS textcontent (
 );
 
 
-INSERT INTO textContent (id, lang, textData) VALUES
+INSERT INTO textcontent (id, lang, textData) VALUES
 (1, 'kr', '난 한국어 너무 좋아해요'),
 (2, 'en', 'English is a nice language'),
 (3, 'de', 'Die äüö sind toll'),
 (4, 'zh', '维基百科（英语：Wikipedia）'),
 (5, 'ja', 'ウィキペディア（英: Wikipedia）');
 
-DROP TABLE IF EXISTS tableWithAutoId;
+DROP TABLE IF EXISTS tablewithautoid;
 
-CREATE TABLE IF NOT EXISTS tableWithAutoId(
+CREATE TABLE IF NOT EXISTS tablewithautoid(
   id int(11) NOT NULL AUTO_INCREMENT,
   textData varchar(255) NOT NULL,
   PRIMARY KEY (id)

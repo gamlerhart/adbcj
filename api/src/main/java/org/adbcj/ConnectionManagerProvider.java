@@ -31,6 +31,7 @@ import java.util.ServiceLoader;
 public class ConnectionManagerProvider {
 
 	public static final String ADBCJ_PROTOCOL = "adbcj";
+    public static final String DBCJ_PROTOCOL="jdbc";
 
 	private ConnectionManagerProvider () {}
 
@@ -68,7 +69,7 @@ public class ConnectionManagerProvider {
 		try {
 			URI uri = new URI(url);
 			String adbcjProtocol = uri.getScheme();
-			if (!ADBCJ_PROTOCOL.equals(adbcjProtocol)) {
+			if (!ADBCJ_PROTOCOL.equals(adbcjProtocol)&& !DBCJ_PROTOCOL.equals(adbcjProtocol)) {
 				throw new DbException("Invalid connection URL: " + url);
 			}
 			URI driverUri = new URI(uri.getSchemeSpecificPart());

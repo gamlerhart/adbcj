@@ -1,0 +1,18 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+
+<suite name="DBCJ-TEST" verbose="1" >
+
+    <test name="DBCJ">
+        <parameter name="url" value="adbcj:mysql://localhost/adbcjtck"/>
+        <parameter name="user" value="adbcjtck"/>
+        <parameter name="password" value="adbcjtck"/>
+        <packages>
+            <package name="org.adbcj.dbcj"/>
+        </packages>
+        <classes>
+            <class name="org.adbcj.dbcj.ConnectionTest"/>
+            <class name="org.adbcj.dbcj.UtilTest"/>
+        </classes>
+    </test>
+</suite>

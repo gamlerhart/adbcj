@@ -103,5 +103,11 @@ public interface Value {
 	 * @return {@code true} if the value is {@code null}, {@code false} otherwise.
 	 */
 	boolean isNull();
+
+
+    short getShort();
+
+    byte getByte();
+    byte[] getBytes() throws UnsupportedOperationException;
 	
 }

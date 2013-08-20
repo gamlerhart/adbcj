@@ -19,7 +19,11 @@ package org.adbcj.support;
 import org.adbcj.DbException;
 import org.adbcj.Value;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -125,7 +129,37 @@ public class DefaultValue implements Value {
 	public boolean isNull() {
 		return value == null;
 	}
-	
+
+    public short getShort(){
+        if (value == null) {
+            return 0;
+        }
+        if (value instanceof Number) {
+            return ((Number)value).shortValue();
+        }
+        return Short.valueOf(value.toString());
+    }
+
+    public byte[] getBytes() throws UnsupportedOperationException{
+        if (value==null){
+            return null;
+        }
+        try{
+            ByteArrayOutputStream bos=new ByteArrayOutputStream();
+            ObjectOutput out= new ObjectOutputStream(bos);
+            out.writeObject(value);
+            return bos.toByteArray();
+        } catch (Exception e){
+            throw new UnsupportedOperationException("type not supported");
+        }
+    }
+    public byte getByte(){
+        if (value == null){
+            return 0;
+        }
+        return ((Byte)value).byteValue();
+    }
+
 	@Override
 	public String toString() {
 		// TODO Add padding if a display width is specified in the Field

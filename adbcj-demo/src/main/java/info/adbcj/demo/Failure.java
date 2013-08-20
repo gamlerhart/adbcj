@@ -50,7 +50,7 @@ public class Failure {
     }
 
     private static void continueInvalidQuery(Connection connection) throws InterruptedException {
-        final DbSessionFuture<ResultSet> result = connection.executeQuery("SELECT * FROM nonExistingTable");
+        final DbFuture<ResultSet> result = connection.executeQuery("SELECT * FROM nonExistingTable");
         result.addListener(new DbListener<ResultSet>() {
             @Override
             public void onCompletion(DbFuture<ResultSet> future) {
