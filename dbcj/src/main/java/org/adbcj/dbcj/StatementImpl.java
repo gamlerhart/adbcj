@@ -5,25 +5,48 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fooling
- * Date: 13-8-15
- * Time: 下午3:33
- * To change this template use File | Settings | File Templates.
+ * @author foooling@gmail.com
  */
 public class StatementImpl implements Statement {
+
+
+    protected final org.adbcj.dbcj.Connection connection;
+    protected final org.adbcj.Connection realConnection;
+
+    public StatementImpl(org.adbcj.dbcj.Connection conn){
+        connection=conn;
+        realConnection=connection.getRealConnection();
+    }
+
+
+
+
     @Override
     public ResultSet executeQuery(String sql) throws SQLException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        try {
+            org.adbcj.ResultSet ars =realConnection.executeQuery(sql).get();
+            return new ResultSetImpl(ars);
+
+        } catch (Exception e){
+            throw new SQLException("Failed to execute query: "+sql);
+        }
     }
 
     @Override
     public int executeUpdate(String sql) throws SQLException {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        try {
+
+            org.adbcj.Result ar =realConnection.executeUpdate(sql).get();
+            return (int)ar.getAffectedRows();
+
+        } catch (Exception e){
+            throw new SQLException("Failed to execute query: "+sql);
+        }
     }
 
     @Override
     public void close() throws SQLException {
+        //TODO: close behavior
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

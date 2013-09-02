@@ -6,11 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fooling
- * Date: 13-8-16
- * Time: 上午11:02
- * To change this template use File | Settings | File Templates.
+ * @author foooling@gmail.com
  */
 public class QueryDemo {
     public static void main(String[] args){
@@ -42,9 +38,9 @@ public class QueryDemo {
             rs=ps.executeQuery();
             while (rs.next()){
 
-                int id=rs.getInt(0);
-                int n=rs.getInt(1);
-                int passwd=rs.getInt(2);
+                int id=rs.getInt(1);
+                int n=rs.getInt(2);
+                int passwd=rs.getInt(3);
                 System.out.println("id:"+id+",name:"+n+",password:"+passwd);
             }
         } catch (Exception e){

@@ -1,4 +1,8 @@
-package dbcj.demo;
+package dbcj.druid;
+
+
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.support.hibernate.DruidConnectionProvider;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,18 +12,7 @@ import java.sql.ResultSet;
 /**
  * @author foooling@gmail.com
  */
-public class MainDemo {
-
-    static {
-        try{
-            Class.forName("org.adbcj.dbcj.Driver");
-            //Uncomment would still work
-            //Class.forName("com.mysql.jdbc.Driver");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
+public class MainDruidDemo {
 
     private static void initTable(Connection connection) throws Exception{
         PreparedStatement pstmt=connection.prepareStatement("CREATE TABLE IF NOT EXISTS user_info(\n" +
@@ -68,15 +61,36 @@ public class MainDemo {
         String url="jdbc:mysql://localhost/adbcjtck";
         String user="adbcjtck";
         String password="adbcjtck";
+        DruidDataSource druidDataSource=new DruidDataSource();
+        //String driver="com.mysql.jdbc.Driver";
+        String driver="org.adbcj.dbcj.Driver";
+        druidDataSource.setDriverClassName(driver);
+        druidDataSource.setUrl(url);
+        druidDataSource.setUsername(user);
+        druidDataSource.setPassword(password);
+        druidDataSource.setMaxActive(10);
+        druidDataSource.setMinIdle(2);
+        druidDataSource.setInitialSize(4);
+        druidDataSource.setMaxWait(50000);
+        druidDataSource.setValidationQuery("select 'x'");
+        druidDataSource.setTestWhileIdle(true);
+        druidDataSource.setTestOnBorrow(false);
+        druidDataSource.setTestOnReturn(false);
+
+        try{
+            druidDataSource.init();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         Connection conn=null;
         try{
-            conn= DriverManager.getConnection(url,user,password);
+            conn= druidDataSource.getConnection();
 
             initTable(conn);
             insertValues(conn);
             checkResults(conn);
             clearTable(conn);
-            //conn.close();
+            conn.close();
 
         } catch (Exception e){
             e.printStackTrace();

@@ -15,80 +15,68 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fooling
- * Date: 13-8-15
- * Time: 下午3:32
- * To change this template use File | Settings | File Templates.
+ * @author foooling@gmail.com
  */
 public class PreparedStatement extends StatementImpl implements java.sql.PreparedStatement{
 
 
-    //executeUpdate or executeQuery
-    protected static enum Type {
-        UPDATE,
-        QUERY
-    }
-    protected final Connection connection;
-    protected final Type type;
-    protected final DbFuture<PreparedUpdate> updateFuture;
-    protected final DbFuture<PreparedQuery> queryFuture;
+
+
+    protected DbFuture<PreparedUpdate> updateFuture=null;
+    protected DbFuture<PreparedQuery> queryFuture=null;
     protected ArrayList<Object> params=new ArrayList<Object>();
     protected final String sql;
 
+    @Override
+    public void close(){
+        //FIXME : may have problem using get() when query is big
+        try{
+            if(updateFuture!=null){
+                updateFuture.cancel(true);
+                updateFuture.get().close();
+            }
+            if (queryFuture!=null){
+                queryFuture.cancel(true);
+                queryFuture.get().close();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            updateFuture=null;
+            queryFuture=null;
+            params=null;
+        }
 
+    }
 
 
 
     public PreparedStatement(Connection con,String sql) throws UnknownError{
-        connection=con;
+        super(con);
         this.sql=sql;
-        type=getQueryType(sql);
 
-        if(type==Type.QUERY){
-            queryFuture=connection.prepareQuery(sql);
-            updateFuture=null;
-        }else {
-            queryFuture=null;
-            updateFuture=connection.prepareUpdate(sql);
-        }
+        /*queryFuture=realConnection.prepareQuery(sql);
+
+        updateFuture=realConnection.prepareUpdate(sql);*/
+
 
     }
+
+
 
     public Object[] getParamArray(){
         return params.toArray();
     }
 
-    public Type getQueryType(String sql) throws UnsupportedOperationException {
-
-        switch (Character.toLowerCase(sql.charAt(0))){
-            //TODO trim    add reason
-            case 's':
-                //for select
-                return Type.QUERY;
-            case 'u':
-                //for update
-            case 'i':
-                //for insert
-            case 'd':
-                //for delete | drop
-            case 'c':
-                //for create
-                return Type.UPDATE;
-            default:
-                throw new UnsupportedOperationException("Not supported query");
-
-        }
-    }
 
 
     @Override
     public ResultSet executeQuery() throws SQLException {
-        if (type != Type.QUERY){
-            throw new SQLException("Not supported query");
-        }
         org.adbcj.ResultSet ars;
         try{
+            if (queryFuture==null){
+                queryFuture=realConnection.prepareQuery(sql);
+            }
             PreparedQuery preparedQuery=queryFuture.get();
             if (params.size()==0)
                 ars = preparedQuery.execute().get();
@@ -102,11 +90,11 @@ public class PreparedStatement extends StatementImpl implements java.sql.Prepare
 
     @Override
     public int executeUpdate() throws SQLException {
-        if (type!=Type.UPDATE){
-            throw new SQLException("Not supported update");
-        }
         org.adbcj.Result ar=null;
         try{
+            if (updateFuture==null){
+                updateFuture=realConnection.prepareUpdate(sql);
+            }
             if (params.size()==0)
                 ar=updateFuture.get().execute().get();
             else
@@ -117,7 +105,7 @@ public class PreparedStatement extends StatementImpl implements java.sql.Prepare
         }
     }
 
-
+    //Set value into an ArrayList
     protected void setValue(int parameterIndex,Object item){
         if (parameterIndex>params.size()){
             for(int i=params.size();i<parameterIndex;i++){

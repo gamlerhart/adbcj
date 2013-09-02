@@ -23,7 +23,6 @@
 		<netty.version>4.0.6.Final</netty.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
 	<modules>
 		<module>api</module>
 		<module>jdbc</module>
@@ -122,7 +121,8 @@
 					</execution>
 				</executions>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <!-- config problem -->
+                    <!-- <encoding>UTF-8</encoding>-->
                 </configuration>
 			</plugin>
 		</plugins>
@@ -229,7 +229,10 @@
 			<scope>test</scope>
 			<classifier>jdk15</classifier>
 		</dependency>
+
+
 	</dependencies>
+
 
 </project>
 

@@ -16,12 +16,14 @@
  */
 package org.adbcj;
 
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The connection manager provider is the entry point for ADBCJ.
@@ -32,7 +34,7 @@ public class ConnectionManagerProvider {
 
 	public static final String ADBCJ_PROTOCOL = "adbcj";
     public static final String DBCJ_PROTOCOL="jdbc";
-
+    public static ConcurrentHashMap<String,ConnectionManager> managerConcurrentHashMap=new ConcurrentHashMap<String, ConnectionManager>();
 	private ConnectionManagerProvider () {}
 
     /**
@@ -44,7 +46,25 @@ public class ConnectionManagerProvider {
      * @throws DbException if it cannot find the driver in the classpath, or one of the connection parameters is wrong
      */
 	public static ConnectionManager createConnectionManager(String url, String username, String password) throws DbException {
-		return createConnectionManager(url, username, password, Collections.<String,String>emptyMap());
+
+        StringBuilder stringBuilder=new StringBuilder();
+        // [+-+] is used to split strings , decrease rate of collision
+        // TODO: not work in special situations , multi-key is better
+        stringBuilder.append(url).append("+-+").append(username).append("+-+").append(password);
+        String key= stringBuilder.toString();
+        ConnectionManager connectionManager=managerConcurrentHashMap.get(key);
+
+        if (connectionManager==null){
+
+            connectionManager=createConnectionManager(url, username, password, Collections.<String,String>emptyMap());
+            managerConcurrentHashMap.putIfAbsent(key,connectionManager);
+            return connectionManager;
+        }else if (connectionManager.isClosed()){
+            connectionManager=createConnectionManager(url, username, password, Collections.<String,String>emptyMap());
+            managerConcurrentHashMap.put(key,connectionManager);
+            return connectionManager;
+        }
+        return connectionManager;
 	}
 
     /**
