@@ -14,7 +14,7 @@
 
     <properties>
         <slf4j.version>1.7.2</slf4j.version>
-        <adbcj.version>0.7-SNAPSHOT</adbcj.version>
+        <adbcj.version>0.7.1-SNAPSHOT</adbcj.version>
     </properties>
 
     <dependencies>
@@ -46,11 +46,25 @@
         </dependency>
         <dependency>
             <groupId>org.adbcj</groupId>
-            <artifactId>dbcj</artifactId>
-            <version>0.7-SNAPSHOT</version>
+            <artifactId>adbcj-dbcj</artifactId>
+            <version>${adbcj.version}</version>
         </dependency>
+        <!-- datasource  -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>0.2.12</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.17</version>
+        </dependency>-->
     </dependencies>
 
+
+    <!-- FIXME: not available sometimes when version changes   -->
+<!--
     <repositories>
         <repository>
             <id>gamlor-snapshot</id>
@@ -60,6 +74,23 @@
             </snapshots>
             <layout>default</layout>
         </repository>
+    </repositories>-->
+    <repositories>
+        <!-- for druid -->
+        <repository>
+            <id>alibaba-opensource</id>
+            <name>alibaba-opensource</name>
+            <url>http://code.alibabatech.com/mvn/releases/</url>
+            <layout>default</layout>
+        </repository>
+        <!-- for druid -->
+        <repository>
+            <id>alibaba-opensource-snapshot</id>
+            <name>alibaba-opensource-snapshot</name>
+            <url>http://code.alibabatech.com/mvn/snapshots/</url>
+            <layout>default</layout>
+        </repository>
     </repositories>
+
 
 </project>

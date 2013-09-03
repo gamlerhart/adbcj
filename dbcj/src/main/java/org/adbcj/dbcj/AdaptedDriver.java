@@ -3,22 +3,41 @@ package org.adbcj.dbcj;
 import java.sql.*;
 
 import org.adbcj.ConnectionManagerProvider;
+
+import java.util.Collections;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
+import org.adbcj.ConnectionManager;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fooling
- * Date: 13-8-13
- * Time: 下午4:53
- * To change this template use File | Settings | File Templates.
+ * @author foooling@gmail.com
  */
 public class AdaptedDriver implements java.sql.Driver {
+    protected ConcurrentHashMap<String,ConnectionManager>managerConcurrentHashMap=new ConcurrentHashMap<String, ConnectionManager>();
     @Override
     public Connection connect(String url, Properties info) throws SQLException {
         org.adbcj.Connection realConnection;
+        StringBuilder stringBuilder=new StringBuilder();
+
+        String user=info.getProperty("user");
+        String password=info.getProperty("password");
+
+        // [+-+] is used to split strings , decrease rate of collision
+        // TODO: not work in special situations , multi-key is better
+        stringBuilder.append(url).append("+-+").append(user).append("+-+").append(password);
+        String key= stringBuilder.toString();
+        ConnectionManager connectionManager=managerConcurrentHashMap.get(key);
+
+        if (connectionManager==null){
+            connectionManager=ConnectionManagerProvider.createConnectionManager(url,user,password);
+            managerConcurrentHashMap.putIfAbsent(key,connectionManager);
+        }else if (connectionManager.isClosed()){
+            connectionManager=ConnectionManagerProvider.createConnectionManager(url,user,password);
+            managerConcurrentHashMap.put(key,connectionManager);
+        }
         try{
-            realConnection=ConnectionManagerProvider.createConnectionManager(url,info.getProperty("user"),info.getProperty("password")).connect().get();
+            realConnection=connectionManager.connect().get();
         }catch (Exception e){
             throw new SQLException("connection establish fail");
         }

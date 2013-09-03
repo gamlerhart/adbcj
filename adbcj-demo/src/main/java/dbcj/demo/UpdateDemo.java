@@ -4,11 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 /**
- * Created with IntelliJ IDEA.
- * User: fooling
- * Date: 13-8-15
- * Time: 下午5:14
- * To change this template use File | Settings | File Templates.
+ * @author foooling@gmail.com
  */
 public class UpdateDemo {
     public static void main(String[] args){

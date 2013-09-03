@@ -16,12 +16,14 @@
  */
 package org.adbcj;
 
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The connection manager provider is the entry point for ADBCJ.
@@ -32,7 +34,7 @@ public class ConnectionManagerProvider {
 
 	public static final String ADBCJ_PROTOCOL = "adbcj";
     public static final String DBCJ_PROTOCOL="jdbc";
-
+    public static ConcurrentHashMap<String,ConnectionManager> managerConcurrentHashMap=new ConcurrentHashMap<String, ConnectionManager>();
 	private ConnectionManagerProvider () {}
 
     /**
@@ -44,7 +46,9 @@ public class ConnectionManagerProvider {
      * @throws DbException if it cannot find the driver in the classpath, or one of the connection parameters is wrong
      */
 	public static ConnectionManager createConnectionManager(String url, String username, String password) throws DbException {
-		return createConnectionManager(url, username, password, Collections.<String,String>emptyMap());
+
+        return createConnectionManager(url, username, password, Collections.<String,String>emptyMap());
+
 	}
 
     /**

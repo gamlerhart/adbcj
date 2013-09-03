@@ -13,11 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fooling
- * Date: 13-8-15
- * Time: 下午3:35
- * To change this template use File | Settings | File Templates.
+ * @author foooling@gmail.com
  */
 public class ResultSetImpl implements ResultSet {
 
@@ -47,6 +43,12 @@ public class ResultSetImpl implements ResultSet {
     protected Object getValue(String columnLabel){
         return this.row.get(columnLabel).getValue();
     }
+    protected Value getByIndex(int columnIndex) throws SQLException{
+       if (columnIndex <1){
+           throw new SQLException("Column Index out of range, "+columnIndex+" < 1.");
+       }
+       return this.row.get(columnIndex-1);
+    }
 
     @Override
     public void close() throws SQLException {
@@ -60,53 +62,53 @@ public class ResultSetImpl implements ResultSet {
 
     @Override
     public String getString(int columnIndex) throws SQLException {
-        return this.row.get(columnIndex).getString();
+        return this.getByIndex(columnIndex).getString();
     }
 
     @Override
     public boolean getBoolean(int columnIndex) throws SQLException {
-        return this.row.get(columnIndex).getBoolean();
+        return this.getByIndex(columnIndex).getBoolean();
     }
 
     @Override
     public byte getByte(int columnIndex) throws SQLException {
-        return this.row.get(columnIndex).getByte();
+        return this.getByIndex(columnIndex).getByte();
     }
 
     @Override
     public short getShort(int columnIndex) throws SQLException {
-        return this.row.get(columnIndex).getShort();
+        return this.getByIndex(columnIndex).getShort();
     }
 
     @Override
     public int getInt(int columnIndex) throws SQLException {
-        return this.row.get(columnIndex).getInt();
+        return this.getByIndex(columnIndex).getInt();
     }
 
     @Override
     public long getLong(int columnIndex) throws SQLException {
-        return this.row.get(columnIndex).getLong();
+        return this.getByIndex(columnIndex).getLong();
     }
 
     @Override
     public float getFloat(int columnIndex) throws SQLException {
-        return this.row.get(columnIndex).getFloat();
+        return this.getByIndex(columnIndex).getFloat();
     }
 
     @Override
     public double getDouble(int columnIndex) throws SQLException {
-        return this.row.get(columnIndex).getDouble();
+        return this.getByIndex(columnIndex).getDouble();
     }
 
     @Override
     public BigDecimal getBigDecimal(int columnIndex, int scale) throws SQLException {
         //FIXME: scale unused !
-        return this.row.get(columnIndex).getBigDecimal();
+        return this.getByIndex(columnIndex).getBigDecimal();
     }
 
     @Override
     public byte[] getBytes(int columnIndex) throws SQLException {
-        return this.row.get(columnIndex).getBytes();
+        return this.getByIndex(columnIndex).getBytes();
     }
 
     @Override

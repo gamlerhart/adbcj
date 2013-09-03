@@ -13,12 +13,14 @@
 
 	<artifactId>adbcj-connection-pool</artifactId>
 	<packaging>jar</packaging>
+    <version>${parent.version}</version>
 	<name>ADBCJ - Connection Pool</name>
 	
 	<dependencies>
 		<dependency>
             <groupId>org.adbcj</groupId>
 			<artifactId>adbcj-api</artifactId>
+            <version>${parent.version}</version>
 		</dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

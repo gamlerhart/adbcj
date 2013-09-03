@@ -12,6 +12,7 @@
 	</parent>
 
 	<artifactId>adbcj-api</artifactId>
+    <version>${parent.version}</version>
 	<packaging>jar</packaging>
 	<name>ADBCJ - API</name>
 	

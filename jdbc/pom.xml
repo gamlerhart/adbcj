@@ -13,12 +13,14 @@
 
 	<artifactId>adbcj-jdbc</artifactId>
 	<packaging>jar</packaging>
+    <version>${parent.version}</version>
 	<name>ADBCJ - JDBC Driver</name>
 
 	<dependencies>
 		<dependency>
 			<artifactId>adbcj-api</artifactId>
 			<groupId>${project.groupId}</groupId>
+            <version>${parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

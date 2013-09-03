@@ -13,12 +13,14 @@
 
     <artifactId>mysql-async-driver</artifactId>
     <packaging>jar</packaging>
+    <version>${parent.version}</version>
     <name>ADBCJ - MySQL Async Driver based on Netty</name>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>adbcj-api</artifactId>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>

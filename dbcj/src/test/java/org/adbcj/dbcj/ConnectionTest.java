@@ -8,11 +8,7 @@ import org.testng.annotations.Test;
 import java.sql.DriverManager;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fooling
- * Date: 13-8-16
- * Time: 下午1:23
- * To change this template use File | Settings | File Templates.
+ * @author foooling@gmail.com
  */
 
 
@@ -38,7 +34,7 @@ public class ConnectionTest {
             java.sql.PreparedStatement pstmt=con.prepareStatement(sql);
             java.sql.ResultSet resultSet =pstmt.executeQuery();
             resultSet.next();
-            Assert.assertEquals(resultSet.getInt(0),1);
+            Assert.assertEquals(resultSet.getInt(1),1);
 
         } catch (Exception e){
             e.printStackTrace();

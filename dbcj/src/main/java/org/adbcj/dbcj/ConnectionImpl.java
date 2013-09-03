@@ -13,11 +13,7 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fooling
- * Date: 13-8-15
- * Time: 下午3:30
- * To change this template use File | Settings | File Templates.
+ * @author foooling@gmail.com
  */
 public class ConnectionImpl implements Connection {
 
@@ -29,24 +25,22 @@ public class ConnectionImpl implements Connection {
     }
 
 
-    /*@Override
+    @Override
     public org.adbcj.Connection getRealConnection(){
+        if (realConnection.isClosed()){
+            return null;
+        }
         return realConnection;
-    }*/
-
-    @Override
-    public DbFuture<PreparedQuery> prepareQuery(String sql) {
-        return realConnection.prepareQuery(sql);
     }
 
-    @Override
-    public DbFuture<PreparedUpdate> prepareUpdate(String sql) {
-        return realConnection.prepareUpdate(sql);
-    }
+
+
+
+
 
     @Override
     public Statement createStatement() throws SQLException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return new StatementImpl(this);
     }
 
     @Override
